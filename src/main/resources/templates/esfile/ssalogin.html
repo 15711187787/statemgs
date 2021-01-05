@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    // <meta charset="utf-8"/> -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>主页</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+    <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="js/echarts.min.js"></script> 
+    <link  rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link  rel="stylesheet" href="css/comlist.css"/>
+</head>
+<meta charset="UTF-8">
+<title>列表详情</title>
+</head>
+  <script type="text/javascript">	
+  	//各单位跳转
+  	$(function(){
+  		var username="admin";
+  		var password="S3cur!ty";
+  		 $.ajax({
+  	        type: "POST",
+  	        url: "/__api/global/user/login?locale=zh_cn", //接口路径
+  	        data: JSON.stringify({
+  	          username: username,
+  	          password: password,
+  	          captcha:"bypass"
+  	        }),
+  		    contentType: "application/json",
+  	        dataType: "JSON",
+  	        success: function(response){
+  	        console.log(response);
+  	          var data = response;
+  	          if (data.statusCode == 0) {
+//   	            window.location.replace("/cases/incident?id="+es_inid);
+  	            window.open("/cases/incident");
+  	            $.cookie("TOKEN",data.data.token);
+  	          }
+  	        }
+  	      });
+  	});
+  </script>
+<body  >
+
+
+
+
+<hr>
+
+</body>
+</html>

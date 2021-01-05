@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>主页</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+    <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="js/echarts.min.js"></script> 
+    <link  rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link  rel="stylesheet" href="css/comlist.css"/>
+</head>
+<meta charset="UTF-8">
+<title>列表详情</title>
+</head>
+
+<!--  <style>-->
+<!--/*   #div_title{ */-->
+<!--/*  	background:url(../image/city.jpg) no-repeat; */-->
+<!--/*   	 background-size: 100% 100%;  */-->
+<!--/*   } */-->
+<!--	#main1{-->
+<!--		margin-top: -70px;-->
+<!--	}-->
+<!--  </style>-->
+<body  >
+<input id="username" th:value="${username}" style="display: none">
+<input id="password" th:value="${password}" style="display: none">
+</body>
+<script type="text/javascript">
+
+    $(document).ready(function(){
+        var username=$("#username").val();
+        var password=$("#password").val();
+        $.ajax({
+            type: "POST",
+            url: "/__api/global/user/login?locale=zh_cn", //接口路径
+            data: JSON.stringify({
+                username: username,
+                password: password,
+                captcha:"bypass"
+            }),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(response){
+                console.log(response);
+                var data = response;
+                if (data.statusCode == 0) {
+  	            window.location.replace("/index.html");
+                    $.cookie("TOKEN",data.data.token);
+                }
+            }
+        });
+    })
+
+</script>
+</html>

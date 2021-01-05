@@ -1,0 +1,28 @@
+    .fakeimg {
+        height: 200px;
+         background: #aaa;
+    }
+   	table{
+		table-layout:fixed;
+	}
+	.listth{
+		word-break:keep-all;
+		overflow: hidden;
+		text-align: center;
+	}
+	.center-in-center{
+		width:40%;
+		height:50%;
+		position: absolute;
+		z-index: 999;
+		top: 0px;
+	    left: 0px;
+	    right: 0px;
+	    bottom: 0px;
+ 	    margin: auto;
+/* 	    opacity:0.8; */
+	    background-color:  #333;
+ 	    display: none;
+ 	    overflow: auto;
+ 	    color:  #eee;
+	}

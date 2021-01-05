@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>页面跳转中...</title>
+</head>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+	<script type="text/javascript" src="js/bootstrap.min.js"></script> 
+	<script type="text/javascript" src="js/echarts.min.js"></script> 
+	<link  rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link  rel="stylesheet" href="css/comlist.css"/>
+<script type="text/javascript">
+	var username=$("#span_userid").text();
+	var password=$("#span_passid").text();
+	/* $.post("es/login","{logname:'"+username+"',password:'"+password+"}'",function(){
+		$("#table_form").submit();
+// 		window.location.href="main";  
+	}); */
+	$(function(){
+		$("#table_form").submit();
+	});
+</script>
+<body>
+ <span id="span_userid" style="display: none" th:text="${username}"></span>
+ <span id="span_passid" style="display: none" th:text="${password}"></span>
+ <form action="es/login" id="table_form" method="post">
+ 	<input type="text" name="logname" th:value="${username}" >
+	<input type="text" name="password" th:value="${password}" >
+ </form>
+</body>
+</html>

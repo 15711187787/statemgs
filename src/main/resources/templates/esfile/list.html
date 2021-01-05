@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    // <meta charset="utf-8"/> -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>主页</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+    <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="js/echarts.min.js"></script> 
+    <link  rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link  rel="stylesheet" href="css/comlist.css"/>
+</head>
+<meta charset="UTF-8">
+<title>列表详情</title>
+</head>
+  <script type="text/javascript">
+	  
+  	function showandhide(th){
+  		var numberid=$(th).find("#numberid").text();
+  		$.get("/es/getEsdatatodayAjax",{'numberid':numberid},function(data){
+  		 	$("#number").text(data.number);
+  			$("#name").text(data.name);
+//   			if(data.level=='0')
+//   				$("#level").text("提醒");
+  			if(data.level=='1')
+  				$("#level").text("低");
+  			if(data.level=='2')
+  				$("#level").text("中");
+  			if(data.level=='3')
+  				$("#level").text("高");
+  			
+  			$("#starttime").text(data.starttime);
+  			$("#content").text(data.content);
+  			$("#inserttime").text(data.inserttime);
+  			
+  		});
+  		$("#center-in-center").show();
+  	}
+  	
+  	
+  	function hideandshow(){
+  		$("#center-in-center").hide();
+  	}
+  	
+  	
+  	function sslSystem(th){
+  		var es_inid=$(th).find("#es_inid").text();
+  		var username=$("#span_userid").text();
+  		var password=$("#span_passid").text();
+  		 $.ajax({
+  	        type: "POST",
+  	        url: "/__api/global/user/login?locale=zh_cn", //接口路径
+  	        data: JSON.stringify({
+  	          username: username,
+  	          password: password,
+  	          captcha:"bypass"
+  	        }),
+  		    contentType: "application/json",
+  	        dataType: "json",
+  	        success: function(response){ 
+  	        console.log(response);
+  	          var data = response;
+  	          if (data.statusCode == 0) {
+//   	            window.location.replace("/cases/incident?id="+es_inid);
+  	            window.open("/cases/incident?id="+es_inid);
+  	            $.cookie("TOKEN",data.data.token);
+  	          }
+  	        }
+  	      });
+  	}
+  	//各单位跳转
+  	function jumpSystem(th){
+//   		alert(th);
+  		var username="admin";
+  		var password="S3cur!ty";
+  		 $.ajax({
+  	        type: "POST",
+  	        //url: "/__api/global/user/login?locale=zh_cn&local=14", //接口路径
+  	        url: "/__api/global/user/login", //接口路径
+  	        data: JSON.stringify({
+  	          username: username,
+  	          password: password,
+  	          captcha:"bypass"
+  	        }),
+  		    contentType: "application/json",
+  	        dataType: "JSON",
+  	        success: function(response){
+  	        console.log(response);
+  	          var data = response;
+  	          if (data.statusCode == 0) {
+//   	            window.location.replace("/cases/incident?id="+es_inid);
+  	            window.open("/cases/incident");
+  	            $.cookie("TOKEN",data.data.token);
+  	          }
+  	        }
+  	      });
+  	}
+ 	function sslSystemindex(){
+  		var username=$("#span_userid").text();
+  		var password=$("#span_passid").text();
+  		 $.ajax({
+  	        type: "POST",
+  	        url: "/__api/global/user/login?locale=zh_cn", //接口路径
+  	        data: JSON.stringify({
+  	          username: username,
+  	          password: password,
+  	          captcha:"bypass"
+  	        }),
+  		    contentType: "application/json",
+  	        dataType: "json",
+  	        success: function(response){ 
+  	        console.log(response);
+  	          var data = response;
+  	          if (data.statusCode == 0) {
+//   	            window.location.replace("/cases/incident?id="+es_inid);
+  	            window.open("/index.html");
+  	            $.cookie("TOKEN",data.data.token);
+  	          }
+  	        }
+  	      });
+  	}
+  </script>
+  <style>
+	#main1{
+		margin-top: -70px;
+	}
+  </style>
+<body>
+<div id="div_title" align="center">
+  <h1>态势感知告警信息展示平台V1.0</h1>
+</div>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <span class="navbar-brand" style="color: #9d9d9d; ">当前登录用户:</span>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar" style="color: #eee">
+      <ul class="nav navbar-nav">
+        <li class="active" style="color: #9d9d9d; margin-top: 15px;" ><span  th:text="${session.es_user.name}"></span></li>
+        <span id="span_userid" style="display: none" th:text="${session.es_user.username}"></span>
+        <span id="span_passid" style="display: none" th:text="${session.es_user.password}"></span>
+<!--         <li><a href="/logout">退出系统</a></li> -->
+        <li><a href="">刷新页面</a></li>
+        <li><a onclick="sslSystemindex()">返回首页</a></li>
+        
+        
+        <li style="margin-top: 10px;">
+	      <div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+		    	请选择跳转单位
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		    <li><a href="http://192.168.1.4:8188/es/ssaLogin" target="_blank">测试</a></li>
+		    <li><a href="http://10.82.17.28:8188/es/ssaLogin" target="_blank">三部</a></li>
+		    <li><a href="http://10.91.3.9:8188/es/ssaLogin" target="_blank">301所</a></li>
+		    <li><a href="http://10.83.240.45:8188/es/ssaLogin" target="_blank">31所</a></li>
+		    <li><a href="http://10.84.9.30:8188/es/ssaLogin" target="_blank">33所</a></li>
+		    <li><a href="http://10.85.2.16:8188/es/ssaLogin" target="_blank">35所</a></li>
+		    <li><a href="http://10.89.1.100:8188/es/ssaLogin" target="_blank">159所</a></li>
+		    <li><a href="http://10.90.1.62:8188/es/ssaLogin" target="_blank">239所</a></li>
+		    <li><a href="http://10.88.83.60/es/ssaLogin" target="_blank">8359所</a></li>
+		   <!--  <li role="separator" class="divider"></li>
+		    <li><a href="#">Separated link</a></li> -->
+		  </ul>
+		</div>
+        </li>
+        <li><a href="asset">页面跳转</a></li>
+        
+        
+        
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+<!--  class="container" -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+ -->
+  <div >
+  <div class="panel panel-default" style="width: 49%">
+	   <div class="panel-body">
+		  <table class="panel-primary"  style="width: 100%">
+		  	<tr style="text-align: center;">
+		  	  <th style="border-right:#cccccc solid 1px;" class="listth">告警编号</th>
+		      <th style="border-right:#cccccc solid 1px;" class="listth">告警名称</th>
+		      <th style="border-right:#cccccc solid 1px;" class="listth">告警等级</th>
+<!-- 		      <th style="border-right:#cccccc solid 1px;" class="listth">告警内容</th> -->
+		      <th style="border-right:#cccccc solid 1px;" class="listth">处置状态</th>
+		      <th class="listth">告警时间</th>
+		  	</tr>
+		  </table>
+	  </div>
+  </div>
+	<div  class="col-sm-6 panel-primary" style="overflow: auto;height: 600px">
+      <table class="table table-hover ">
+		  <thead>
+		    <tr style="align-content: center;color:  #222">
+		     </tr>
+		  </thead>
+		  <tbody >
+<!-- 		    <tr  th:each="collect:${list}"  style="align-content: center;"  onclick="showandhide(this)"> -->
+		    <tr  th:each="collect:${list}"  style="align-content: center;"  onclick="sslSystem(this)">
+		      <td class="listth" th:text="${collect.number}" id="numberid" >告警编号</td>
+		      <td class="listth" th:text="${collect.name}">告警名称</td>
+		      <td class="listth" th:if="${collect.level== '3'}">高</td>
+		      <td class="listth" th:if="${collect.level== '2'}">中</td>
+		      <td class="listth" th:if="${collect.level== '1'}">低</td>
+<!-- 		      <td class="listth" th:if="${collect.level== '0'}">提醒</td> -->
+		      <td class="listth" th:if="${collect.status== '0'}">处置中</td>
+		      <td class="listth" th:if="${collect.status== '1'}">待处置</td>
+		      <td class="listth" th:if="${collect.status== '2'}">处置完成</td>
+		      <td class="listth" th:if="${collect.status== '3'}">忽略</td>
+		      <td class="listth" th:text="${collect.inserttime}" >告警时间</td>
+		      <td class="listth" th:text="${collect.inid}" style="display: none" id="es_inid">唯一编号</td>
+		      </tr>
+<!-- 		      success warning   danger -->
+		  </tbody>
+		</table>
+    </div>
+      
+     <div class="container center-in-center" id="center-in-center" >
+			<a class="btn btn-primary btn-lg" onclick="hideandshow()"  role="button">关闭</a></p>
+			<div id="show_data_div">
+			<table class="table table-bordered" style="align-content: center;">
+			  <tr >
+			  	<td width="80px">告警编号</td>
+			  	<td id="number"></td>
+			  </tr>
+			  <tr>
+			  	<td>告警名称</td>
+			  	<td id="name"></td>
+			  </tr>
+			  <tr>
+			  	<td>告警级别</td>
+			  	<td id="level"></td>
+			  </tr>
+			  <tr>
+			  	<td>发生时间</td>
+			  	<td id="starttime"></td>
+			  </tr>
+<!-- 			  <tr> -->
+<!-- 			  	<td>告警内容</td> -->
+<!-- 			  	<td id="content"></td> -->
+<!-- 			  </tr> -->
+			  <tr>
+			  	<td>告警时间</td>
+			  	<td id="inserttime"></td>
+			  </tr> 
+		      </table>
+			</div>
+			
+	</div>
+		
+      <div class="col-sm-6">
+      <div id="main1" style="height:300px;background-color: #eee"></div><br/>
+      <font size="2">态势感知告警信息总量柱状图:</font>
+      <div  id="main" style="height:300px;background-color: #eee"></div>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main1'));
+        $.get("/es/getEsdataEchars","",function (data){
+        // 指定图表的配置项和数据
+        	var option = {
+            	    title: {
+            	        text: '态势感知折线图',
+            	        textStyle: {//主标题文本样式{"fontSize": 18,"fontWeight": "bolder","color": "#333"}
+                            fontFamily: 'Arial, Verdana, sans...',
+                            fontSize: 12,
+                            fontStyle: 'normal',
+                            fontWeight: 'normal',
+                        }
+            	    },
+            	    tooltip: {
+            	        trigger: 'axis'
+            	    },
+            	    legend: {
+            	        data: [ '低', '中', '高']
+            	    },
+            	    grid: {
+            	        left: '3%',
+            	        right: '5%',
+            	        bottom: '3%',
+            	        containLabel: true
+            	    },
+            	    toolbox: {
+            	        feature: {
+            	            saveAsImage: {}
+            	        }
+            	    },
+            	    xAxis: {
+            	        type: 'category',
+            	        boundaryGap: false,
+            	        data: data[1]
+            	    },
+            	    yAxis: {
+            	        type: 'value'
+            	    },
+           	   series: data[0]
+            	};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+		},'json');
+        
+        $.get("/es/syncEsDatabase","",function(data){
+        	//登录之后，异步同步更新es数据
+  	 	});
+    </script>
+      <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main'));
+		$.get("/es/getesLevelSum","",function(data){
+			var option = {
+					    color: ['#3398DB'],
+					    tooltip: {
+					        trigger: 'axis',
+					        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+					            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+					        }
+					    },
+					    grid: {
+					        left: '3%',
+					        right: '4%',
+					        bottom: '3%',
+					        containLabel: true
+					    },
+					    xAxis: [
+					        {
+					            type: 'category',
+					            data: ['低', '中', '高'],
+					            axisTick: {
+					                alignWithLabel: true
+					            }
+					        }
+					    ],
+					    yAxis: [
+					        {
+					            type: 'value'
+					        }
+					    ],
+					    series: [
+					        {
+					            name: '告警数量',
+					            type: 'bar',
+					            barWidth: '60%',
+					            data: data
+					        }
+					    ]
+					};
+        // 指定图表的配置项和数据
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option);
+		},'json');
+    </script>
+      
+    </div>
+  </div>
+
+<hr>
+<img src="">
+</body>
+</html>

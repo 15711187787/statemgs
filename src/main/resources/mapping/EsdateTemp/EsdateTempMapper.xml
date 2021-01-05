@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.hangdun.Mapper.EsdataTempMapper">
+ 	<resultMap id="esdatatemp" type="cn.com.hangdun.pojo.hansight.EsdataTemp"   >
+ 		<result property="id" column="es_id" jdbcType="INTEGER"/>
+ 		<result property="index" column="es_index" jdbcType="VARCHAR"/>
+ 		<result property="level" column="es_level"  jdbcType="VARCHAR"/>
+ 		<result property="starttime" column="es_starttime"  jdbcType="VARCHAR"/>
+ 		<result property="name" column="es_name"  jdbcType="VARCHAR"/>
+ 		<result property="content" column="es_content"  jdbcType="VARCHAR"/>
+ 		<result property="number" column="es_number"  jdbcType="VARCHAR"/>
+ 		<result property="inserttime" column="es_inserttime"  jdbcType="VARCHAR"/>
+ 		<result property="inid" column="es_inid"  jdbcType="VARCHAR"/>
+ 		<result property="status" column="es_status"  jdbcType="VARCHAR"/>
+ 	</resultMap>
+ 	
+ 	<sql id="esdatatempSql">
+ 		es_id,es_index,es_level,es_starttime,es_name,es_content,es_number,es_inserttime,es_inid,es_status
+ 	</sql>
+ 	
+	<insert id="insertEs"  parameterType="cn.com.hangdun.pojo.hansight.EsdataTemp">
+		INSERT INTO esdatatemp (es_id,es_index,es_level,es_starttime,es_name,es_content,es_number,es_inserttime,es_inid,es_status) VALUES (#{id},#{index}, #{level}, #{starttime}, #{name}, #{content},#{number},#{inserttime},#{inid},#{status});
+	</insert>
+    
+    
+    <select id="getByNumber"  parameterType="String" resultMap="esdatatemp">
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp where es_number=#{number}
+    </select>
+    
+    <select id="getOne" resultMap="esdatatemp">
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp  order by es_inserttime desc limit 1
+    </select>
+    <select id="getTodoMsg" parameterType="HashMap" resultMap="esdatatemp" >
+<!--     	SELECT <include refid="esdatatempSql"/>  from esdatatemp  where es_level = 2 or es_level = 3 ORDER BY es_inserttime desc -->
+
+
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp where 
+    	
+    	es_inserttime between STR_TO_DATE(#{startdate},'%Y-%m-%d') and 
+    	
+    	STR_TO_DATE(#{enddate},'%Y-%m-%d')
+    	
+    	and es_status in(0,1)
+    	
+    	and es_level = 2 or es_level = 3    
+    	
+		ORDER BY es_inserttime desc
+
+    </select>
+    
+    <select id="esYesterday"  parameterType="String" resultMap="esdatatemp">
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp where es_inserttime=#{inserttime}
+    </select>
+    
+    <select id="esYesterdayOne"  parameterType="String" resultMap="esdatatemp">
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp where es_number=#{inserttime}
+    </select>
+    
+    
+    <select id="esdataAll"  parameterType="String" resultMap="esdatatemp">
+    	SELECT <include refid="esdatatempSql"/>  from esdatatemp ORDER BY es_inserttime DESC,es_level DESC
+    </select>
+    
+	<!--     获取每天的总数据 -->
+    <select id="getdaySum"  parameterType="String" resultType="Integer">
+    	SELECT COUNT(*) FROM esdatatemp WHERE  es_inserttime = #{time}
+    </select>
+       
+	<!--   根据告警级别查询当日总量 -->
+    <select id="esdataLevelSum"  parameterType="HashMap" resultType="Integer">
+    	SELECT COUNT(*) FROM esdatatemp WHERE  es_inserttime = #{time} and es_level=#{level}
+    </select>
+    
+	<!--   根据告警级别查询总量 -->
+    <select id="esLevelSum"  parameterType="Integer" resultType="Integer">
+    	SELECT COUNT(*) FROM esdatatemp WHERE es_level=#{level}
+    </select>
+    
+	<!--   更新告警信息  -->
+    <update id="updateEs"  parameterType="EsdataTemp" >
+    	UPDATE esdatatemp SET 
+    	es_index=#{index},
+    	es_level=#{level},
+    	es_starttime=#{starttime},
+    	es_name=#{name},
+    	es_content=#{content},
+    	es_number=#{number},
+    	es_inserttime=#{inserttime},
+    	es_inid=#{inid},
+    	es_status=#{status}
+    	WHERE es_id=#{id}
+    </update>
+    
+    
+    
+    
+    
+</mapper>

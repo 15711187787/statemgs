@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script> 
+    <script type="text/javascript" src="js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="js/echarts.min.js"></script> 
+    <link  rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link  rel="stylesheet" href="css/comlist.css"/>
+<body>
+<script type="text/javascript">
+	// 点击空白处或者ESC键不关闭
+	$('#myModal').modal({backdrop: 'static', keyboard: false});
+
+	// 默认不打开
+	$("#myModal").modal('hide');
+</script>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar" style="color: #eee">
+      <ul class="nav navbar-nav">
+      <li class="active" style="color: #9d9d9d;margin-top: 15px;"  th:text="${'当前登录用户:   ' +session.es_user.name}"></li> 
+       
+       <li><a href="">刷新页面</a></li>
+       <li><a href="main" target=”_blank”>返回首页</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<button id="link" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">新增资产</button>
+
+<div id="myModal"  class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+            </div>
+            <form class="form-horizontal" action="asset_save" method="post">
+	            <div class="modal-body"  style="width: 99%">
+	              <table class="table" >
+				      <thead>
+				        <tr >
+				          <th colspan="2" style="text-align: center;">
+							添加资产工单
+						  </th>
+				        </tr>
+				      </thead>
+				      <tbody>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">资产名称：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_name"  placeholder="资产名称">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">IP：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_ip" placeholder="IP">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">资产类型：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_type"  placeholder="资产类型">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">重点资产：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_core"  placeholder="重点资产">
+							    </div>
+							 </div>
+						  </th>
+				        </tr><tr>
+				          <th colspan="2" style="text-align: center;">
+				        	  基本属性
+						  </th>
+				        </tr><tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">资产编号：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control"  name="asset_num" placeholder="资产编号">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">资产状态：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control"  name="asset_status" placeholder="资产状态">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">责任人：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_person" placeholder="责任人">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">MAC地址：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_mac"  placeholder="MAC地址">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">使用人：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_user" placeholder="使用人">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">手机号：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control"  name="asset_phone" placeholder="手机号">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">厂商：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_vendor"  placeholder="厂商">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">型号：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_model" placeholder="型号">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">端口：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_port" placeholder="端口">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">服务：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_server"  placeholder="服务">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">操作系统：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_system" placeholder="操作系统">
+							    </div>
+							 </div>
+						  </th>
+						   <th></th>
+				        </tr>
+				        <tr>
+				          <th colspan="2" style="text-align: center;">
+				        	  业务系统
+						  </th>
+				        </tr>
+				        <tr>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">业务系统：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_busystem"  placeholder="业务系统">
+							    </div>
+							 </div>
+						  </th>
+				          <th>
+				         	<div class="form-group">
+						   	 <label  class="col-sm-3 control-label">安全域：</label>
+							    <div class="col-sm-8">
+							      <input type="text" class="form-control" name="asset_secdomain" placeholder="安全域">
+							    </div>
+							 </div>
+						  </th>
+				        </tr>
+				      </tbody>
+				    </table>
+		     </div>
+		      <div class="modal-footer">
+			   <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			   <button type="submit" class="btn btn-primary" >保存工单</button>
+			 </div>
+		</form>
+    </div>
+</div>
+</div>
+
+<script>
+    $('#link').click(function () {
+        var src = 'asset_add';
+        $('#myModal').modal('show');
+        $('#myModal iframe').attr('src', src);
+    });
+
+    $('#myModal button').click(function () {
+        $('#myModal iframe').removeAttr('src');
+    });
+</script>
+
+	<table class="table" >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Column heading</th>
+          <th>Column heading</th>
+          <th>Column heading</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="active">
+          <th scope="row">1</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <th scope="row">2</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="success">
+          <th scope="row">3</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <th scope="row">4</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="info">
+          <th scope="row">5</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <th scope="row">6</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="warning">
+          <th scope="row">7</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr>
+          <th scope="row">8</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+        <tr class="danger">
+          <th scope="row">9</th>
+          <td>Column content</td>
+          <td>Column content</td>
+          <td>Column content</td>
+        </tr>
+      </tbody>
+    </table>
+</body>
+</html>

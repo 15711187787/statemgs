@@ -1,0 +1,46 @@
+server:
+  port: 8189
+  servlet:
+    context-path: /es
+spring:
+  datasource:
+      username: hansight
+      password: hansight
+      url: jdbc:mysql://192.168.1.4:3399/hansight?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+#      url: jdbc:mysql://10.17.63.4:3399/hansight?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+#      url: jdbc:mysql://192.168.1.4:3399/hansight?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+#      username: root
+#      password: root
+#      url: jdbc:mysql://127.0.0.1:3306/hansight?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+      driver-class-name: com.mysql.jdbc.Driver
+      
+  thymeleaf:
+     cache: false
+     prefix:classpath: /templates
+     
+
+  mvc:
+   view:
+      prefix: /templates 
+      suffix: .html
+#      static-path-pattern: /templates/**
+myprops:
+    clusterName: hansight-enterprise
+    clusterNode : 10.100.9.174
+#    clusterNode : 10.17.63.4
+#    clusterNode : 192.168.1.4
+    clusterPort: 9300
+    poolSize: 10
+    snf: true
+#    url: http://10.17.63.4:8188/es/loginJumpToDo?
+    url: http://10.100.9.174:8188/es/loginJumpToDo?
+    index: incident_local
+    type : incident
+    level : 1
+
+
+mybatis:
+  mapper-locations: classpath:mapping/*/*Mapper.xml
+  type-aliases-package: cn.com.hangdun.pojo
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

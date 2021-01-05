@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>登录</title>
+</head>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/comlist.css" />
+<style>
+	#form_div_id{
+		position:absolute;
+		top:25%;
+		width:5%;
+		right:10%;
+ 	    margin: auto;
+	}
+    html{
+        height:100%;
+    }
+    body{
+        background:url(image/city.jpg) no-repeat;
+/*         background-size: cover;  */
+        background-size: 100% 100%;
+    }
+    .btn-lg{
+     padding:10px 155px;
+    }
+</style>
+<script type="text/javascript">
+	function formvalidata(){
+		$("#p_msg").html("用户名不能为空");
+		var logname=$("#logname").val();
+		
+		if(logname.trim() == ""){
+		}else{
+			$("#table_form").submit();
+		}
+	}
+</script>
+<body >
+	<div id="form_div_id" class="jumbotron" style="width: 400px;height: 350px;border-radius: 10px;" >
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;请&nbsp;登&nbsp;录</p>
+		<hr>
+	  	<div class="container">
+			<form method="post" action="/es/login" id="table_form">
+				<div class="form-group" >
+					<div class="input-group input-group-lg">
+					  <span class="input-group-addon" ><span class="glyphicon glyphicon-user"></span></span>
+					  <input type="text" class="form-control" th:value="${retuen_logname}" id="logname" name="logname" placeholder="Username" aria-describedby="sizing-addon1">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group input-group-lg">
+					  <span class="input-group-addon" ><span class="glyphicon glyphicon-lock"></span></span>
+					  <input type="password" class="form-control" name="password" placeholder="Password">
+					</div>
+				</div>
+				<div  th:if="${msg}" >
+					<div id="error_msg" class="alert-danger" style="height: 20px;" role="alert"></span>
+						<p id="p_msg" style="font-size: 15px" th:text="${msg}"><p/>
+					</div>
+				</div>
+				<p align="center" style="width: 100%">
+					<a class="btn btn-primary btn-lg" onclick="formvalidata()" type="submit">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+				</p>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
